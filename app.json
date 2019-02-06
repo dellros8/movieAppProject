@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "movieAppProject",
-    "slug": "movieAppProject",
+    "name": "AskMovie",
+    "slug": "askmovie",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }
