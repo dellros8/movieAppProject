@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, ImageBackground, Image, SafeAreaView } from 'react-native';
-require('./resources/webScraper.js');
+
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -12,6 +12,7 @@ export default class HomeScreen extends React.Component {
             text: "",
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleSubmit() {
@@ -20,10 +21,10 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
-                <Image source={require("./assets/movieBackground.png")} style={{ height: '100%' }}></Image>
-                <TextInput ref={input => { this.textInput = input }} style={styles.mainInput} placeholder="Search for movie..." onSubmitEditing={this.handleSubmit} onChangeText={(text) => this.setState({ text: text })}></TextInput>
-            </SafeAreaView>
+            <View style={styles.container}>
+                <Image source={require("./assets/movieBackgroundThree.jpg")} style={{ height: '100%' }}></Image>
+                <TextInput clearButtonMode="always" style={styles.mainInput} placeholder="Search for movie..." onSubmitEditing={this.handleSubmit} onChangeText={(text) => this.setState({ text: text })}></TextInput>
+            </View>
         );
     }
 }
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "50%",
         height: 70,
+        marginTop: -35,
         width: 300,
         fontSize: 30,
         backgroundColor: "rgba(255,255,255,0.8)",

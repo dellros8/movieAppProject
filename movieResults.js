@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, ImageBackground, Image, ScrollView, Row, TouchableHighlight } from 'react-native';
-import netflixArray from './resources/webScraper.js';
 
 const api_key = "7f66f00967ae0299408dd756de39b931";
+
+let netflixArray = [];
+let hboArray = [];
+let primevideoArray = [];
 
 export default class movieResults extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             q: "a",
-            display: []
+            display: [],
         };
         this.componentDidMount = this.componentDidMount.bind(this);
         this.newSearch = this.newSearch.bind(this);
@@ -18,10 +21,32 @@ export default class movieResults extends React.Component {
     }
 
     componentDidMount() {
+        fetch("https://dellros8.github.io/movieAppProject/resources/netflixArray.json")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                netflixArray = myJson.netflixArray
+            });
+        fetch("https://dellros8.github.io/movieAppProject/resources/hboArray.json")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                hboArray = myJson.hboArray;
+            });
+        fetch("https://dellros8.github.io/movieAppProject/resources/primevideoArray.json")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                primevideoArray = myJson.primevideoArray;
+            });
+
         const { navigation } = this.props;
         this.state.q = navigation.getParam('search');
-
         this.newSearch();
+
     }
 
     newSearch() {
@@ -43,34 +68,38 @@ export default class movieResults extends React.Component {
                 myJson.results.map((item) => {
                     newState.push(item)
                     item.imageUrl = "https://image.tmdb.org/t/p/w200" + item.poster_path
-                    item.releaseDate = item.release_date.split("-")[0]
+                    item.releaseDate = item.release_date.split("-")[0] || "N/A"
 
                     item.netflix = false;
                     item.hbo = false;
                     item.viaplay = false;
+                    item.primevideo = false;
 
-                    
-                    const fakeHbo = [{title: "Zodiac"}, {title: "The Prestige"}, {title: "Prisoners"}, {title: "A Star Is Born"}, {title: "Game Of Thrones"}]
-                    const fakeViaplay = [{title: "Zodiac"}, {title: "Star Wars"}]
 
                     netflixArray.map((movie) => {
                         if (movie.title === item.title) {
                             item.netflix = true;
                         }
                     });
-                    fakeHbo.map((movie) => {
+                    hboArray.map((movie) => {
                         if (movie.title === item.title) {
                             item.hbo = true;
                         }
                     });
-                    fakeViaplay.map((movie) => {
+                    primevideoArray.map((movie) => {
                         if (movie.title === item.title) {
-                            item.viaplay = true;
+                            item.primevideo = true;
                         }
                     });
+                    // fakeViaplay.map((movie) => {
+                    //     if (movie.title === item.title) {
+                    //         item.viaplay = true;
+                    //     }
+                    // });
                 });
                 this.setState({ display: newState })
             })
+
     }
 
     handleClick(item) {
@@ -81,10 +110,10 @@ export default class movieResults extends React.Component {
         return (
             <ScrollView contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}>
                 <View style={{ width: "100%", alignItems: "center" }}>
-                    <TextInput ref={input => { this.textInput = input }} style={styles.mainInput} placeholder="Search for another movie..." onSubmitEditing={this.newSearch} onChangeText={(text) => this.setState({ q: text })}></TextInput>
+                    <TextInput clearButtonMode="always" style={styles.mainInput} placeholder="Search for another movie..." onSubmitEditing={this.newSearch} onChangeText={(text) => this.setState({ q: text })}></TextInput>
                 </View>
-                <Text style={{ width: "100%", textAlign: "center", fontSize: 30, marginTop: 20 }}>
-                    {this.state.display.length} Results Found
+                <Text style={{ width: "100%", textAlign: "center", fontSize: 16, marginTop: 15 }}>
+                    {this.state.display.length} titles found
                 </Text>
 
                 {this.state.display.map((item, key) => {
@@ -97,6 +126,7 @@ export default class movieResults extends React.Component {
                             <View style={styles.iconContainer}>
                                 {item.netflix === true ? <Image style={{ height: 24, width: 24, marginRight: 3 }} source={require('./assets/netflixicon.png')}></Image> : null}
                                 {item.hbo === true ? <Image style={{ height: 24, width: 24, marginRight: 3 }} source={require('./assets/hbicon.png')}></Image> : null}
+                                {item.primevideo === true ? <Image style={{ height: 24, width: 24, borderRadius: 3 }} source={require('./assets/primevideo.jpg')}></Image> : null}
                                 {item.viaplay === true ? <Image style={{ height: 24, width: 24, borderRadius: 3 }} source={require('./assets/viaplayicon.jpeg')}></Image> : null}
                             </View>
                         </View>
@@ -113,7 +143,8 @@ const styles = StyleSheet.create({
         color: "red",
         width: "50%",
         alignItems: "center",
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 20,
     },
     movieImage: {
         width: 170,

@@ -23,6 +23,7 @@ export default class SinglePage extends React.Component {
         let netflixrender = null
         let hborender = null
         let viaplayrender = null
+        let primevideorender = null
 
         if (movie.netflix === true) {
             netflixrender =
@@ -44,6 +45,16 @@ export default class SinglePage extends React.Component {
             hborender = null
         };
 
+        if (movie.primevideo === true) {
+            primevideorender =
+                <View style={{ alignItems: "center" }}>
+                    <Image style={{ width: 60, height: 60, borderRadius: 6 }} source={require('./assets/primevideo.jpg')}></Image>
+                    <Text style={{ fontWeight: "bold" }}>Prime Video</Text>
+                </View>
+        } else {
+            viaplayrender = null
+        };
+
         if (movie.viaplay === true) {
             viaplayrender =
                 <View style={{ alignItems: "center" }}>
@@ -56,8 +67,8 @@ export default class SinglePage extends React.Component {
         return (
             <ScrollView contentContainerStyle={{ alignItems: 'center', marginTop: 10 }}>
                 <Image style={styles.movieImage} source={{ uri: movie.imageUrl }}></Image>
-                <Text style={styles.movieTitle}>{movie.title}({movie.releaseDate || "unknown"})</Text>
-                <Text style={styles.movieGenre}>({movie.genre_ids.map((genre) => { return this.hash[genre] }).join(", ") || "unknown"})</Text>
+                <Text style={styles.movieTitle}>{movie.title}({movie.releaseDate})</Text>
+                <Text style={styles.movieGenre}>({movie.genre_ids.map((genre) => { return this.hash[genre] }).join(", ") || "N/A"})</Text>
                 <View style={styles.descriptionWrapper}>
                     <View style={{ alignItems: "center" }}>
                         <Image style={{ width: 34, height: 30 }} source={require('./assets/tmdbicon.png')}></Image>
@@ -73,6 +84,8 @@ export default class SinglePage extends React.Component {
                     {hborender}
 
                     {viaplayrender}
+
+                    {primevideorender}
 
                 </View>
             </ScrollView>
