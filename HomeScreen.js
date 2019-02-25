@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput, ImageBackground, Image, SafeAreaView } from 'react-native';
-
+// require('./resources/webScraper.js');
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {

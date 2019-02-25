@@ -77,17 +77,17 @@ export default class movieResults extends React.Component {
 
 
                     netflixArray.map((movie) => {
-                        if (movie.title === item.title) {
+                        if (movie.title === item.title && movie.release_date === item.releaseDate) {
                             item.netflix = true;
                         }
                     });
                     hboArray.map((movie) => {
-                        if (movie.title === item.title) {
+                        if (movie.title === item.title && movie.release_date === item.releaseDate) {
                             item.hbo = true;
                         }
                     });
                     primevideoArray.map((movie) => {
-                        if (movie.title === item.title) {
+                        if (movie.title === item.title && movie.release_date === item.releaseDate) {
                             item.primevideo = true;
                         }
                     });
